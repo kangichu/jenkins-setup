@@ -6,6 +6,9 @@ def run_command(command, description):
     subprocess.run(command)
     print("Done.")
 
+def remove_jenkins_bridge_network():
+    run_command(['docker', 'network', 'rm', 'jenkins'], "Removing Existing Jenkins bridge network")
+
 def create_jenkins_bridge_network():
     run_command(['docker', 'network', 'create', 'jenkins'], "Creating Jenkins bridge network")
 
@@ -54,10 +57,10 @@ def access_jenkins_container():
     os.system('docker exec -it jenkins-blueocean bash')
 
 if __name__ == '__main__':
+    remove_jenkins_bridge_network()
     create_jenkins_bridge_network()
     run_docker_dind_image()
     create_dockerfile()
     build_docker_image()
     run_jenkins_container()
     get_jenkins_password()
-    # access_jenkins_container()
